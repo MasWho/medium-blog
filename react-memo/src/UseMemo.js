@@ -6,8 +6,8 @@
  */
 
 import { useState, useMemo } from "react";
-import ButtonStyles from '../styles/Button.module.css';
-import AppStyles from '../styles/App.module.css';
+import ButtonStyles from './styles/Button.module.css';
+import AppStyles from './styles/App.module.css';
 
 
 // Generate data outside of component to mimic consistent data coming from parent

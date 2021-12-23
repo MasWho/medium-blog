@@ -11,8 +11,8 @@
  */
 
 import React, { useState, useCallback } from "react";
-import ButtonStyles from '../styles/Button.module.css';
-import AppStyles from '../styles/App.module.css';
+import ButtonStyles from './styles/Button.module.css';
+import AppStyles from './styles/App.module.css';
 
 
 const Child1 = React.memo(({ show }) => {

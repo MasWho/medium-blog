@@ -8,8 +8,8 @@
  */
 
 import { useState } from "react";
-import ButtonStyles from '../styles/Button.module.css';
-import AppStyles from '../styles/App.module.css';
+import ButtonStyles from './styles/Button.module.css';
+import AppStyles from './styles/App.module.css';
 
 // Child component that will render based on show prop
 const Child1 = ({show}) => {
