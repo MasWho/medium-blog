@@ -1,9 +1,3 @@
-/**
- * NOTE:
- * 1. Try use css module
- * 2. Things in App should be sectioned input HOCs
- */
-
 import AppStyles from './styles/App.module.css';
 import ButtonStyles from './styles/Button.module.css';
 import Revaluation from './Revaluation';
