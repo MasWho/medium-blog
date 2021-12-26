@@ -35,17 +35,11 @@ const Child3 = () => {
 };
 
 
-const Child4 = () => {
-  console.log('Child4 RUNNING');
-  return "";
-};
-
-
 const Revaluation = () => {
-  const [show, setShow] = useState(false);
+  const [toggle, setToggle] = useState(false);
 
   const toggleHandler = () => {
-    setShow(!show);
+    setToggle(!toggle);
   };
 
   // This should log everytime the toggle button is clicked
@@ -56,10 +50,8 @@ const Revaluation = () => {
       <h1>Hello!</h1>
       {/* Child1 will be revaluated regardless of show, as well as Child2 */}
       <Child1 show={false} />
-      {/* Child3 will not be revaluated */}
-      {false && <Child3 />}
-      {/* Child4 will be revaluated */}
-      <Child4 />
+      {/* Child3 will be revaluated */}
+      <Child3 />
       <button className={ButtonStyles.Button} onClick={toggleHandler}>Toggle this!</button>
     </div>
   );
