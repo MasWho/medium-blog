@@ -1,15 +1,3 @@
-/**
- * NOTE:
- * 1. Optimise children component revaluation using React.memo
- * 2. memo wraps around a component function, checks props using memoization and decides if it needs to be revaluated
- * 3. Trade off cost of storing and comparing props with skipping component revaluation
- * 4. React.memo only works with functional components
- * 5. React.memo uses === for comparing props, which means non-primitive props will always cause component revaluation e.g. functions, arrays, objects
- * 6. use useCallback to wrap functions so that react memoize them
- * 7. useCallback second argument is an dependency array, fill up the same way as useEffect
- * 8. WATCH OUT for not specifying useCallback dependencies correctly. Functions are closures and useCallback may cause functions to retain stale external dependencies.
- */
-
 import React, { useState, useCallback } from "react";
 import ButtonStyles from './styles/Button.module.css';
 import AppStyles from './styles/App.module.css';
@@ -56,7 +44,7 @@ const MemoAndCallback = () => {
     <div className={AppStyles.Content}>
       <h1>Hello!</h1>
       {/* Only revaluate Child1 if show changed */}
-      <Child1 show={show} />
+      <Child1 show={false} />
       {/* Functions being a non-primitive data type will cause Child2 to revaluate even if wrapped in React.memo */}
       <Child2 func={child2Func} />
       <Child3 func={child3Func} />
