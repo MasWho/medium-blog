@@ -1,10 +1,3 @@
-/**
- * NOTE:
- * 1. useMemo can be used to memoize results from heavy computations
- * 2. Has significant cost in terms of storage and comparison
- * 3. Consider carefully in it's usage.
- */
-
 import { useState, useMemo } from "react";
 import ButtonStyles from './styles/Button.module.css';
 import AppStyles from './styles/App.module.css';
@@ -14,7 +7,7 @@ import AppStyles from './styles/App.module.css';
 const generateNumbers = (len, max) => Array.from({length: len}, () => Math.floor(Math.random() * max));
 const data = generateNumbers(1000000, 100);
 
-const UseMemo = () => {
+const UseMemoExample = () => {
   // State just for triggering revaluation, don't care what it is
   const [revaluate, setRevaluate] = useState();
 
@@ -25,11 +18,11 @@ const UseMemo = () => {
 
   const start = new Date().getTime(); 
 
-  const result = [...data].sort();
+  // const result = [...data].sort();
 
-  // const result = useMemo(() => {
-  //   return [...data].sort()
-  // }, [data]);
+  const result = useMemo (() => {
+    return [...data].sort()
+  }, []);
 
   const end = new Date().getTime();
   const duration = end - start;
@@ -43,4 +36,4 @@ const UseMemo = () => {
   )
 };
 
-export default UseMemo;
+export default UseMemoExample;
