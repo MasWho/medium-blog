@@ -1,6 +1,4 @@
 const express = require("express");
-const path = require("path");
-
 const indexRouter = require("./routes/index");
 const routeOneRouter = require("./routes/route_one");
 const routeTwoRouter = require("./routes/route_two");
