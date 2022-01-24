@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js"
+    "build": "rm -rf ./dist && npx tsc",
+    "build-and-start": "npm run build && node src/app.js"
   },
   "author": "",
   "license": "ISC",
