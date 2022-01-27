@@ -13,10 +13,7 @@
     "allowJs": true,                                  /* Allow JavaScript files to be a part of your program. Use the `checkJS` option to get errors from these files. */
 
     /* Emit */
-    "sourceMap": true,                                /* Create source map files for emitted JavaScript files. */
-    "outDir": "./dist",                                   /* Specify an output folder for all emitted files. */
-    "removeComments": true,                           /* Disable emitting comments. */
-    "noEmitOnError": true,                            /* Disable emitting files if any type checking errors are reported. */
+    "noEmit": true,
 
     /* Interop Constraints */
     "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */
