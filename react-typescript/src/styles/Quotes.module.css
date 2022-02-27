@@ -16,6 +16,12 @@
   box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
 }
 
+.quote:hover {
+  cursor: pointer;
+  transform: scale(1.02);
+  transition: all 0.1s;
+}
+
 .quote p {
   color: rgb(95, 94, 94);
   margin: 0;
