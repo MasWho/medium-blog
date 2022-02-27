@@ -1,0 +1,26 @@
+.quotesContainer {
+  margin-top: 5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3em;
+}
+
+.quote {
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.4em;
+  padding: 2em;
+  width: 35%;
+  gap: 1em;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+}
+
+.quote p {
+  color: rgb(95, 94, 94);
+  margin: 0;
+}
+
+.quote p:nth-child(2) {
+  align-self: flex-end;
+}
