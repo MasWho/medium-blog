@@ -1,15 +1,16 @@
 import styles from '../styles/QuotesForm.module.css';
-import QuoteModel from '../model/quote';
+import QuoteData from '../model/quote';
 import React, { useRef } from 'react';
 
-const QuotesForm: React.FC<{onAddQuote: (quote: QuoteModel) => void}> = ({onAddQuote}) => {
+const QuotesForm: React.FC<{onAddQuote: (quote: QuoteData) => void}> = ({onAddQuote}) => {
 
   const authorRef = useRef<HTMLInputElement>(null);
   const quoteRef = useRef<HTMLTextAreaElement>(null);
 
-  const addButtonClickHandler = (event: React.FormEvent) => {
+  const addButtonClickHandler = (event: React.FormEvent): void => {
     event.preventDefault();
-    const quote = new QuoteModel(
+    const quote = new QuoteData(
+      // Random number generator for quote id creation
       Math.floor(Math.random()*100000 + 1), 
       quoteRef.current ? quoteRef.current.value : '',
       authorRef.current ? authorRef.current.value: ''

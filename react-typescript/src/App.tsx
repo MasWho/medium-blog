@@ -1,19 +1,19 @@
 import './App.css';
 import QuotesForm from './components/QuotesForm';
-import Quotes from './components/Quotes';
+import QuoteList from './components/QuoteList';
 import { useState } from 'react';
-import QuoteModel from './model/quote';
+import QuoteData from './model/quote';
 
 function App() {
-  const [quotes, setQuotes] = useState<QuoteModel[]>([]);
+  const [quotes, setQuotes] = useState<QuoteData[]>([]);
 
-  const addQuoteHandler = (quote: QuoteModel) => {
+  const addQuoteHandler = (quote: QuoteData): void => {
     setQuotes(prevState => {
       return [...prevState, quote];
     });
   };
 
-  const removeQuoteHandler = (id: number) => {
+  const removeQuoteHandler = (id: number): void => {
     setQuotes(prevState => {
       const newQuotes = prevState.filter(quote => quote.id !== id);
       return newQuotes;
@@ -23,7 +23,7 @@ function App() {
   return (
     <div className="App">
       <QuotesForm onAddQuote={addQuoteHandler} />
-      <Quotes quotes={quotes} onRemove={removeQuoteHandler} />
+      <QuoteList quotes={quotes} onRemove={removeQuoteHandler} />
     </div>
   );
 }
