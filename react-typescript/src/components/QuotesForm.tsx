@@ -2,7 +2,9 @@ import styles from '../styles/QuotesForm.module.css';
 import QuoteData from '../model/quote';
 import React, { useRef } from 'react';
 
-const QuotesForm: React.FC<{onAddQuote: (quote: QuoteData) => void}> = ({onAddQuote}) => {
+type QuotesFormProps = {onAddQuote: (quote: QuoteData) => void};
+
+const QuotesForm: React.FC<QuotesFormProps> = ({onAddQuote}) => {
 
   const authorRef = useRef<HTMLInputElement>(null);
   const quoteRef = useRef<HTMLTextAreaElement>(null);
