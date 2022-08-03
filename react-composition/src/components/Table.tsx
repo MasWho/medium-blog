@@ -1,16 +1,15 @@
-import { useEpicTableStore, GlobalState } from "../store/EpicTableStoreProvider";
+// Global imports
+
+// Local imports
+import { useEpicTableStore } from "../store/store";
+import { testAction } from "../store/actions";
 
 const Table: React.FC<{}> = () => {
-  const [globalState, setGlobalState] = useEpicTableStore();
+  const [globalState, dispatch] = useEpicTableStore();
 
   const clickHandler = () => {
-    setGlobalState!((prevState: GlobalState) => {
-      return {
-        ...prevState,
-        test2: 1000
-      };
-    });
-  }
+    dispatch(testAction({data: 'Nooooooo'}));
+  };
 
   return <div onClick={clickHandler}>
     {globalState.test1}

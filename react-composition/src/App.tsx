@@ -1,13 +1,14 @@
 import './App.css';
 import Table from './components/Table';
-import { EpicTableStoreProvider } from './store/EpicTableStoreProvider';
+import EpicTableContainer from './store/store';
+import { mockData } from './model/mockData';
 
 function App() {
   return (
     <div className="App">
-      <EpicTableStoreProvider>
+      <EpicTableContainer data={mockData}>
         <Table/>
-      </EpicTableStoreProvider>
+      </EpicTableContainer>
     </div>
   );
 }
