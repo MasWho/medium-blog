@@ -4,9 +4,7 @@
 import { GlobalState, ReducerAction, ActionsEnum } from "./types";
 
 export const defaultGlobalState: GlobalState = {
-  test1: true,
-  test2: 2,
-  test3: "hello",
+  data: [],
 };
 
 /**
@@ -23,7 +21,6 @@ export const epicTableReducer = (
   if (action.type === ActionsEnum.TEST_ACTION) {
     return {
       ...state,
-      test3: action.payload.data
     };
   }
 

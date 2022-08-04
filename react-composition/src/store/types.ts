@@ -5,13 +5,13 @@ export enum ActionsEnum {
 
 // Reducer types
 export interface GlobalState {
-  test1: boolean,
-  test2: number,
-  test3: string,
+  data: {
+    [dataField: string]: any
+  }
 };
 
 export interface ActionPayload {
-  data: any,
+  [dataField: string]: any,
 };
 
 export interface ReducerAction {
@@ -20,7 +20,7 @@ export interface ReducerAction {
 };
 
 // Context types
-export type StoreProvidedValues = [
-  GlobalState,
-  React.Dispatch<ReducerAction>
-];
+export interface StoreProvidedValues {
+  globalState: GlobalState,
+  dispatch: React.Dispatch<ReducerAction>
+};

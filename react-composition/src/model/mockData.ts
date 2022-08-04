@@ -1,3 +1,11 @@
+export interface MockDatum {
+  col1: number,
+  col2: number,
+  col3: number,
+  col4: number,
+  col5: number,
+};
+
 export const mockData = [
   {col1: 1, col2: 2, col3: 3, col4: 4, col5: 5},
   {col1: 6, col2: 7, col3: 8, col4: 9, col5: 10},

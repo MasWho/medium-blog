@@ -6,16 +6,16 @@ import { StoreProvidedValues } from "./types";
 import { defaultGlobalState, epicTableReducer } from "./reducer";
 
 // This creates the global context to be used for providing states to children components
-const EpicTableContext = React.createContext<StoreProvidedValues>([
-  defaultGlobalState,
-  () => {}
-]);
+const EpicTableContext = React.createContext<StoreProvidedValues>({
+  globalState: defaultGlobalState,
+  dispatch: () => {},
+});
 EpicTableContext.displayName = "EpicTableStore";
 export const useEpicTableStore = () => useContext(EpicTableContext);
 
 interface EpicTableContainerProps {
   children?: React.ReactNode,
-  data: {
+  data?: {
     [dataField: string]: any
   }[]
 };
@@ -29,9 +29,16 @@ const EpicTableContainer: React.FC<EpicTableContainerProps> = ({
   children,
   data
 }) => {
+  if(!!data) defaultGlobalState.data = data;
   const [globalState, dispatch] = useReducer(epicTableReducer, defaultGlobalState);
+
+  const contextValues = {
+    globalState,
+    dispatch
+  };
+
   return (
-    <EpicTableContext.Provider value={[globalState, dispatch]}>
+    <EpicTableContext.Provider value={contextValues}>
       {children}
     </EpicTableContext.Provider>
   );
