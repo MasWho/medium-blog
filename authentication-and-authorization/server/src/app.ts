@@ -1,6 +1,6 @@
 // global dependencies
 import * as dotenv from 'dotenv';
-dotenv.config();
+dotenv.config();  // initialise environment variables using a local .env file
 
 // set express app
 import express from 'express';

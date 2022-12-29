@@ -1,3 +1,5 @@
+/* App.tsx */
+
 import './App.css';
 
 function App() {
