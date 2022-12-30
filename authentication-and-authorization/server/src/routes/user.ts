@@ -6,13 +6,12 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 // project dependencies
-import User from '../data_resource/User';
-import UserDataSource from '../data_resource/UserDataSource';
-import InMemoryDataProvider from '../data_provider/InMemoryDataProvider';
+import UserRepository, {User} from '../repositories/UserRepository';
+import InMemoryDataProvider from '../data_providers/InMemoryDataProvider';
 import { validateHasParameters, validateEmailFormat, validatePasswordLength } from "../middleware/validation";
 
 const dataProvider = new InMemoryDataProvider<User>();
-const userDataSource = new UserDataSource({provider: dataProvider});
+const userRepository = new UserRepository({provider: dataProvider});
 
 /**
  * Register an user with email, password and name inputs
@@ -25,7 +24,7 @@ router.post(
   async (req, res) => {
     const { name, email, password } = req.body;
     try {
-      const userExist = await userDataSource.get({id: email, matchField: 'email'});
+      const userExist = await userRepository.get({id: email, matchField: 'email'});
       if (userExist) {
         return res.status(409).json({ error: "User already exist" });
       }
@@ -46,7 +45,7 @@ router.post(
       const newUser = new User(userData);
 
       // Persist user data
-      await userDataSource.create(newUser);
+      await userRepository.create(newUser);
 
       const jwtOptions = {
         expiresIn: '24h',  // Expire token in 24 hours
@@ -81,7 +80,7 @@ router.post(
 
     try {
       // Check if user exist AND password supplied is correct
-      const user = await userDataSource.get({id: email, matchField: 'email'});
+      const user = await userRepository.get({id: email, matchField: 'email'});
       const userExists = !!user;
       const passwordCorrect = userExists && (await bcrypt.compare(password, user.data.password));
       if(userExists && passwordCorrect) {

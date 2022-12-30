@@ -1,6 +1,6 @@
-import IDataProvider from "../data_provider/IDataProvider";
+import IDataProvider from "../data_providers/IDataProvider";
 
-export default abstract class DataSource<Resource> {
+export default abstract class Repository<Resource> {
   protected _provider: IDataProvider<Resource>;
 
   constructor(args: {provider: IDataProvider<Resource>}) {

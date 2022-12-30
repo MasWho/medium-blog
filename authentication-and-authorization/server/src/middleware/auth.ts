@@ -3,12 +3,11 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 const { AUTH_TOKEN_KEY } = process.env;
 
 // Project dependencies
-import User from '../data_resource/User';
-import UserDataSource from '../data_resource/UserDataSource';
-import InMemoryDataProvider from '../data_provider/InMemoryDataProvider';
+import UserRepository, {User} from '../repositories/UserRepository';
+import InMemoryDataProvider from '../data_providers/InMemoryDataProvider';
 
 const dataProvider = new InMemoryDataProvider<User>();
-const userDataSource = new UserDataSource({provider: dataProvider});
+const userRepository = new UserRepository({provider: dataProvider});
 
 /**
  * Auth middleware for checking incoming request headers and verifies if an auth token
@@ -29,7 +28,7 @@ export const checkAuthToken = async (req: any, res: any, next: any) => {
 
     const decodedUserInfo = jwt.verify(auth_token, AUTH_TOKEN_KEY!) as JwtPayload;
     // Check if user actually exist in db
-    const user = await userDataSource.get({ id: decodedUserInfo.user_id, matchField: 'id' });
+    const user = await userRepository.get({ id: decodedUserInfo.user_id, matchField: 'id' });
     if(!user) {
       throw new Error('Unauthorized');
     }

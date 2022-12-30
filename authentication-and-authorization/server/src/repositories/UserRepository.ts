@@ -1,8 +1,25 @@
-import IDataProvider from "../data_provider/IDataProvider";
-import DataSource from "./DataSource";
-import User from "./User";
+import IDataProvider from "../data_providers/IDataProvider";
+import Repository from "./Repository";
+import { randomUUID } from "crypto";
+import { GenericResource } from "../types/generic";
 
-export default class UserDataSource extends DataSource<User> {
+type UserData = {
+  email: string,
+  name: string,
+  password: string,
+  createdAt: string,
+  updatedAt: string
+};
+
+export class User implements GenericResource<UserData> {
+  public id: string;
+
+  constructor(public data: UserData) {
+    this.id = randomUUID();
+  };
+}
+
+export default class UserRepository extends Repository<User> {
   constructor(args: {provider: IDataProvider<User>}) {
     super({provider: args.provider});
   }
