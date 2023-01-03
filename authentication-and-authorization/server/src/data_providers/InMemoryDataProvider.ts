@@ -1,3 +1,5 @@
+// server/src/data_providers/InMemoryDataProvider.ts
+
 import IDataProvider from "./IDataProvider";
 
 export default class InMemoryDataProvider<Resource extends {id: string, data: any}> implements IDataProvider<Resource> {
@@ -6,10 +8,6 @@ export default class InMemoryDataProvider<Resource extends {id: string, data: an
   constructor() {
     this._data = [];
   };
-
-  public get allData(): Resource[] {
-    return this._data;
-  }
 
   public async createData(resource: Resource) {
     this._data.push(resource);

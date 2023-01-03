@@ -24,7 +24,7 @@ router.post(
   async (req, res) => {
     const { name, email, password } = req.body;
     try {
-      const userExist = await userRepository.get({id: email, matchField: 'email'});
+      const userExist = await userRepository.getUserBy({id: email, matchField: 'email'});
       if (userExist) {
         return res.status(409).json({ error: "User already exist" });
       }
@@ -45,7 +45,7 @@ router.post(
       const newUser = new User(userData);
 
       // Persist user data
-      await userRepository.create(newUser);
+      await userRepository.createUser(newUser);
 
       const jwtOptions = {
         expiresIn: '24h',  // Expire token in 24 hours
@@ -80,7 +80,7 @@ router.post(
 
     try {
       // Check if user exist AND password supplied is correct
-      const user = await userRepository.get({id: email, matchField: 'email'});
+      const user = await userRepository.getUserBy({id: email, matchField: 'email'});
       const userExists = !!user;
       const passwordCorrect = userExists && (await bcrypt.compare(password, user.data.password));
       if(userExists && passwordCorrect) {

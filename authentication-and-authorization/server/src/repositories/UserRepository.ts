@@ -1,7 +1,8 @@
+// server/src/repositories/UserRepository.ts
+
 import IDataProvider from "../data_providers/IDataProvider";
 import Repository from "./Repository";
 import { randomUUID } from "crypto";
-import { GenericResource } from "../types/generic";
 
 type UserData = {
   email: string,
@@ -11,35 +12,33 @@ type UserData = {
   updatedAt: string
 };
 
-export class User implements GenericResource<UserData> {
-  public id: string;
+export class UserResource {
+  private _id: string;
 
-  constructor(public data: UserData) {
-    this.id = randomUUID();
+  constructor(private _data: UserData) {
+    this._id = randomUUID();
   };
+
+  public get id(): string {
+    return this._id;
+  }
+
+  public get data(): UserData {
+    return this._data;
+  }
 }
 
-export default class UserRepository extends Repository<User> {
-  constructor(args: {provider: IDataProvider<User>}) {
+export default class UserRepository extends Repository<UserResource> {
+  constructor(args: {provider: IDataProvider<UserResource>}) {
     super({provider: args.provider});
   }
 
-  public async create(user: User) {
-    this.provider.createData(user);
+  public async createUser(user: UserResource) {
+    await this.provider.createData(user);
     return;
   }
 
-  public async get(args: {id: string, matchField: string}) {
+  public async getUserBy(args: {id: string, matchField: string}) {
     return this.provider.readData({id: args.id, matchField: args.matchField});
-  }
-
-  public async update(args: {id: string, resource: User}) {
-    this.provider.updateData({id: args.id, resource: args.resource});
-    return;
-  }
-
-  public async delete(id: string) {
-    this.provider.deleteData(id);
-    return;
   }
 }

@@ -1,6 +1,8 @@
+// server/src/repositories/Repository.ts
+
 import IDataProvider from "../data_providers/IDataProvider";
 
-export default abstract class Repository<Resource> {
+export default class Repository<Resource> {
   protected _provider: IDataProvider<Resource>;
 
   constructor(args: {provider: IDataProvider<Resource>}) {
@@ -10,12 +12,4 @@ export default abstract class Repository<Resource> {
   public get provider(): IDataProvider<Resource> {
     return this._provider;
   }
-
-  abstract create(resource: Resource): Promise<void>;
-
-  abstract get(args: {id: string, matchField: string}): Promise<Resource>;
-
-  abstract update(args: {id: string, resource: Resource}): Promise<void>;
-
-  abstract delete(id: string): Promise<void>;
 }
