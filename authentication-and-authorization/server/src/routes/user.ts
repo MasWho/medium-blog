@@ -6,11 +6,11 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 // project dependencies
-import UserRepository, {User} from '../repositories/UserRepository';
+import UserRepository, {UserResource} from '../repositories/UserRepository';
 import InMemoryDataProvider from '../data_providers/InMemoryDataProvider';
 import { validateHasParameters, validateEmailFormat, validatePasswordLength } from "../middleware/validation";
 
-const dataProvider = new InMemoryDataProvider<User>();
+const dataProvider = new InMemoryDataProvider<UserResource>();
 const userRepository = new UserRepository({provider: dataProvider});
 
 /**
@@ -42,7 +42,7 @@ router.post(
         createdAt: date,
         updatedAt: date,
       };
-      const newUser = new User(userData);
+      const newUser = new UserResource(userData);
 
       // Persist user data
       await userRepository.createUser(newUser);
