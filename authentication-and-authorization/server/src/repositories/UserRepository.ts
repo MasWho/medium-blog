@@ -3,6 +3,7 @@
 import IDataProvider from "../data_providers/IDataProvider";
 import Repository from "./Repository";
 import { randomUUID } from "crypto";
+import InMemoryDataProvider from "../data_providers/InMemoryDataProvider";
 
 type UserData = {
   email: string,
@@ -28,7 +29,7 @@ export class UserResource {
   }
 }
 
-export default class UserRepository extends Repository<UserResource> {
+export class UserRepository extends Repository<UserResource> {
   constructor(args: {provider: IDataProvider<UserResource>}) {
     super({provider: args.provider});
   }
@@ -42,3 +43,8 @@ export default class UserRepository extends Repository<UserResource> {
     return this.provider.readData({id: args.id, matchField: args.matchField});
   }
 }
+
+const dataProvider = new InMemoryDataProvider<UserResource>();
+const userRepository = new UserRepository({provider: dataProvider});
+
+export default userRepository;

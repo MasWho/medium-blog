@@ -8,12 +8,9 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 // project dependencies
-import UserRepository, {UserResource} from '../repositories/UserRepository';
-import InMemoryDataProvider from '../data_providers/InMemoryDataProvider';
+import {UserResource} from '../repositories/UserRepository';
 import { validateHasParameters, validateEmailFormat, validatePasswordLength } from "../middleware/validation";
-
-const dataProvider = new InMemoryDataProvider<UserResource>();
-const userRepository = new UserRepository({provider: dataProvider});
+import userRepository from '../repositories/UserRepository';
 
 /**
  * Register an user with email, password and name inputs
