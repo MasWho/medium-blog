@@ -9,6 +9,6 @@ import { checkAuthToken } from '../middleware/auth';
 
 // All routes for api
 router.use('/user', userRoute);
-router.use('/resource', checkAuthToken, resourceRoute)
+router.use('/resource', checkAuthToken, resourceRoute);
 
 export default router;

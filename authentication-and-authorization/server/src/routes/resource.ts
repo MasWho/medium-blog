@@ -1,3 +1,5 @@
+// server/src/routes/resource.ts
+
 import {Router} from 'express';
 const resourceRoute = Router();
 
