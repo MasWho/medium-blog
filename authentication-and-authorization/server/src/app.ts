@@ -1,3 +1,5 @@
+/* app.ts */
+
 // global dependencies
 import * as dotenv from 'dotenv';
 dotenv.config();  // initialise environment variables using a local .env file

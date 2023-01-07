@@ -1,7 +1,9 @@
+// server/src/routes/user.ts
+
 // global dependencies
 const { ENCRYPTION_KEY, AUTH_TOKEN_KEY } = process.env;
 import {Router} from 'express';
-const router = Router();
+const userRoute = Router();
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
@@ -16,7 +18,7 @@ const userRepository = new UserRepository({provider: dataProvider});
 /**
  * Register an user with email, password and name inputs
  */
-router.post(
+userRoute.post(
   "/register",
   validateHasParameters("email", "password", "name"),
   validateEmailFormat,
@@ -72,7 +74,7 @@ router.post(
 /**
  * Authenticate a user login session using input email and password if valid.
  */
-router.post(
+userRoute.post(
   "/login",
   validateHasParameters("email", "password"),
   async (req, res) => {
@@ -110,4 +112,4 @@ router.post(
   }
 );
 
-export default router;
+export default userRoute;

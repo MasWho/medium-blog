@@ -3,10 +3,10 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 const { AUTH_TOKEN_KEY } = process.env;
 
 // Project dependencies
-import UserRepository, {User} from '../repositories/UserRepository';
+import UserRepository, {UserResource} from '../repositories/UserRepository';
 import InMemoryDataProvider from '../data_providers/InMemoryDataProvider';
 
-const dataProvider = new InMemoryDataProvider<User>();
+const dataProvider = new InMemoryDataProvider<UserResource>();
 const userRepository = new UserRepository({provider: dataProvider});
 
 /**
@@ -28,7 +28,7 @@ export const checkAuthToken = async (req: any, res: any, next: any) => {
 
     const decodedUserInfo = jwt.verify(auth_token, AUTH_TOKEN_KEY!) as JwtPayload;
     // Check if user actually exist in db
-    const user = await userRepository.get({ id: decodedUserInfo.user_id, matchField: 'id' });
+    const user = await userRepository.getUserBy({ id: decodedUserInfo.user_id, matchField: 'id' });
     if(!user) {
       throw new Error('Unauthorized');
     }

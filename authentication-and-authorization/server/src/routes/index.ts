@@ -1,3 +1,5 @@
+// server/src/routes/index.ts
+
 // Global dependencies
 import {Router} from 'express';
 const router = Router();
