@@ -8,6 +8,7 @@ import AuthContext from '../../store/auth/AuthContextProvider';
 import { validatePasswordLength, validateEmailFormat } from './validations';
 import { LoginData } from '../../hooks/api/apiData';
 import { Link } from 'react-router-dom';
+import styles from './Auth.module.css';
 
 /**
  * Component for user login, requires the user to input email and password.
@@ -66,13 +67,17 @@ const Login = () => {
   return (
     <>
       <h2>Log In</h2>
-      <form onSubmit={loginHandler}>
-        <label htmlFor='email'>Email</label>
-        <input id="email" name="email" type="email" required placeholder='Email Address' />
-        <label htmlFor='password'>Password</label>
-        <input id="password" name="password" type="password" required placeholder='Password' />
+      <form onSubmit={loginHandler} className={styles.Form}>
+        <div className={styles.Input}>
+          <label htmlFor='email'>Email</label>
+          <input id="email" name="email" type="email" required placeholder='Email Address' />
+        </div>
+        <div className={styles.Input}>
+          <label htmlFor='password'>Password</label>
+          <input id="password" name="password" type="password" required placeholder='Password' />
+        </div>
         <button type="submit">Submit</button>
-        <Link to={'/user/register'}>Don't have an account? Sign up</Link>
+        <Link className={styles.Link} to={'/user/register'}>Don't have an account? Sign up</Link>
       </form>
     </>
   );
