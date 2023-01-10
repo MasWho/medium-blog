@@ -1,0 +1,16 @@
+.Resource {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.Resource button {
+  width: 10%;
+  padding: 5px;
+  margin: 0 auto;
+  min-width: 175px;
+}
+
+.Resource button:hover {
+  cursor: pointer;
+}

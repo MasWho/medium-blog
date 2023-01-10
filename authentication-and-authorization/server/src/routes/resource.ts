@@ -8,7 +8,7 @@ resourceRoute.get(
   async (req, res) => {
     return res
       .status(200)
-      .send("<h1>You have successfully access resource!</h1>");
+      .json({data: "You have successfully accessed resource!" });
   }
 );
 

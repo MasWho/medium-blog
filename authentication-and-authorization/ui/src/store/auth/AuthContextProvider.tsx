@@ -4,6 +4,7 @@
 
 // Global imports
 import React, { createContext, useReducer, useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthActionEnum } from "./authActions";
 import authReducer from "./authReducer";
 
@@ -42,7 +43,7 @@ const authCtx = createContext<AuthContext>({
 });
 
 type AuthProviderProps = {
-  children: React.ReactNode[],
+  children: React.ReactElement,
 }
 
 /**
@@ -55,6 +56,7 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
   const {children} = props;
 
   const [authState, authDispatch] = useReducer(authReducer, defaultAuthState);
+  const navigate = useNavigate();
 
   // Check if user detail is persisted, mostly catering for refreshing of the browser
   useEffect(() => {
@@ -80,8 +82,8 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
         email,
       },
     });
-    // TODO: Navigate to resource
-  }, []);
+    navigate('/resource');
+  }, [navigate]);
 
   /**
    * Dispatch a LOG_OUT action to the authReducer
@@ -89,8 +91,8 @@ export const AuthContextProvider = (props: AuthProviderProps) => {
    */
   const globalLogOutDispatch = useCallback(() => {
     authDispatch({type: AuthActionEnum.LOG_OUT, payload: null});
-    // TODO: Navigate to login
-  }, []);
+    navigate('/user/login');
+  }, [navigate]);
 
 
   // Cart context values to be passed down to children
