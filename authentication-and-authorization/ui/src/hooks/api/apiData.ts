@@ -1,3 +1,5 @@
+/* ui/src/hooks/api/apiData.ts */
+
 export type RegisterData = {
   success: boolean,
   createdUser: {

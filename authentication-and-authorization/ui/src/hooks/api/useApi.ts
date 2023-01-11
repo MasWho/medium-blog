@@ -1,28 +1,18 @@
+/* ui/src/hooks/api/useApi.ts */
+
 // Global dependencies
 import { useState, useCallback, useContext } from "react";
 
 // Project dependencies
 import AuthContext from "../../store/auth/AuthContextProvider";
 
-const BASE_URL = 'http://localhost:8000';
+const BASE_URL = "http://localhost:8000";
 
-/**
- * Custom hook for making http requests using the Fetch API.
- * Provides state logic for loading and error.
- */
 const useApi = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { authState, globalLogOutDispatch } = useContext(AuthContext);
 
-  /**
-   * send request to a url specified with params passed.
-   * Optionally pass in a call back to handle the response received.
-   * @param {string} endpoint
-   * @param {object} params
-   * @param {Function} handleSuccessResponse
-   * @param {Function} handleErrorResponse
-   */
   const request = useCallback(
     async (
       endpoint: string,
