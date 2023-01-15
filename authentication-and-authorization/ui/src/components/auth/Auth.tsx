@@ -1,4 +1,4 @@
-/* ui/src/components/auth/Login.tsx */
+/* ui/src/components/auth/Auth.tsx */
 
 // Global imports
 import { useEffect, useState, useContext, FormEventHandler } from "react";
@@ -7,33 +7,38 @@ import { useEffect, useState, useContext, FormEventHandler } from "react";
 import useApi from "../../hooks/api/useApi";
 import AuthContext from "../../store/auth/AuthContextProvider";
 import { validatePasswordLength, validateEmailFormat } from "./validations";
-import { LoginData } from "../../hooks/api/apiData";
-import { Link } from "react-router-dom";
-import styles from "./Auth.module.css";
+import { AuthData } from "../../hooks/api/apiData";
+import { useLocation } from "react-router-dom";
+import LoginForm from "./LoginForm";
+import RegisterForm from "./RegisterForm";
 
-const Login = () => {
-  const [authData, setAuthData] = useState<LoginData>();
+const Auth = () => {
+  const [authData, setAuthData] = useState<AuthData>();
   const { request, setError } = useApi();
   const { globalLogInDispatch } = useContext(AuthContext);
+  const location = useLocation();
+  const currentPathArray = location.pathname.split('/');
+  const isLogin = currentPathArray[currentPathArray.length - 1] === 'login';
 
   // Upon successful response from the api for login user, dispatch global auth LOG_IN event
   useEffect(() => {
     if (authData && "success" in authData) {
       globalLogInDispatch({
-        authToken: authData.loggedInUser.auth_token,
-        userId: authData.loggedInUser.user_id,
-        name: authData.loggedInUser.name,
-        email: authData.loggedInUser.email,
+        authToken: authData.user.auth_token,
+        userId: authData.user.user_id,
+        name: authData.user.name,
+        email: authData.user.email,
       });
     }
   }, [authData, globalLogInDispatch]);
 
-  const loginHandler: FormEventHandler<HTMLFormElement> = async (event) => {
+  const authHandler: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // Validations first!
     const userEmail = data.get("email");
     const userPassword = data.get("password");
+    const userName = data.get("name");
     try {
       if (
         !validateEmailFormat(userEmail?.toString() || "") ||
@@ -49,9 +54,12 @@ const Login = () => {
         body: JSON.stringify({
           email: userEmail,
           password: userPassword,
+          name: userName,
         }),
       };
-      await request("/user/login", params, setAuthData);
+
+      const endpoint = `/user/${isLogin ? 'login' : 'register'}`
+      await request(endpoint, params, setAuthData);
     } catch (error: any) {
       setError(error.message || error);
     }
@@ -59,35 +67,14 @@ const Login = () => {
 
   return (
     <>
-      <h2>Log In</h2>
-      <form onSubmit={loginHandler} className={styles.Form}>
-        <div className={styles.Input}>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            required
-            placeholder="Email Address"
-          />
-        </div>
-        <div className={styles.Input}>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            required
-            placeholder="Password"
-          />
-        </div>
-        <button type="submit">Submit</button>
-        <Link className={styles.Link} to={"/user/register"}>
-          Don't have an account? Sign up
-        </Link>
-      </form>
+      <h2>{isLogin ? 'Log In' : 'Sign Up'}</h2>
+      {
+        isLogin
+          ? <LoginForm onSubmit={authHandler} />
+          : <RegisterForm onSubmit={authHandler} />
+      }
     </>
   );
 };
 
-export default Login;
+export default Auth;

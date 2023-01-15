@@ -4,9 +4,8 @@ import "./App.css";
 import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import AuthContext from "./store/auth/AuthContextProvider";
 import { useContext } from "react";
-import Register from "./components/auth/Register";
-import Login from "./components/auth/LogIn";
 import Resource from "./components/resource/Resource";
+import Auth from "./components/auth/Auth";
 
 function App() {
   const { authState } = useContext(AuthContext);
@@ -25,8 +24,8 @@ function App() {
         />
         {!authState.isLoggedIn && (
           <Route path="user">
-            <Route path="register" element={<Register />} />
-            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Auth />} />
+            <Route path="login" element={<Auth />} />
           </Route>
         )}
         {authState.isLoggedIn && (

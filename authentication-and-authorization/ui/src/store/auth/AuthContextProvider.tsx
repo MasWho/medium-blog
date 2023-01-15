@@ -8,20 +8,14 @@ import React, {
   useEffect,
 } from "react";
 import { useNavigate } from "react-router-dom";
+
+// Project dependencies
 import { AuthActionEnum } from "./authActions";
-import authReducer from "./authReducer";
+import authReducer, { AuthState, defaultAuthState } from "./authReducer";
 
 type AuthProviderProps = {
   children: React.ReactElement;
 };
-
-export interface AuthState {
-  isLoggedIn: boolean;
-  authToken?: string;
-  userId?: string;
-  name?: string;
-  email?: string;
-}
 
 export type UserData = {
   authToken: string;
@@ -36,10 +30,6 @@ export interface AuthContext {
   globalLogOutDispatch: () => void;
 }
 
-// Default states for context
-export const defaultAuthState: AuthState = {
-  isLoggedIn: false,
-};
 
 // Auth context
 const authCtx = createContext<AuthContext>({

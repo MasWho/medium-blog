@@ -1,25 +1,11 @@
 /* ui/src/hooks/api/apiData.ts */
 
-export type RegisterData = {
+export type AuthData = {
   success: boolean,
-  createdUser: {
+  user: {
     user_id: string,
     email: string,
     name: string,
     auth_token: string,
   },
-} | {
-  error: string;
 };
-
-export type LoginData = {
-  success: boolean,
-  loggedInUser: {
-    user_id: string,
-    email: string,
-    name: string,
-    auth_token: string,
-  },
-} | {
-  error: string;
-}

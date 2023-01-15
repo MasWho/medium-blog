@@ -1,8 +1,19 @@
 /* ui/src/store/auth/authReducer.ts */
 
 import { Reducer } from "react";
-import { AuthState, defaultAuthState } from "./AuthContextProvider";
 import { AuthAction } from "./authActions";
+
+export interface AuthState {
+  isLoggedIn: boolean;
+  authToken?: string;
+  userId?: string;
+  name?: string;
+  email?: string;
+};
+
+export const defaultAuthState: AuthState = {
+  isLoggedIn: false,
+};
 
 const authReducer: Reducer<AuthState, AuthAction> = (state, action) => {
   // user successfully authenticated

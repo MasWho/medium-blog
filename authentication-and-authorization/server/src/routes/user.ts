@@ -54,7 +54,7 @@ userRoute.post(
 
       return res.status(200).json({
         success: true,
-        createdUser: {
+        user: {
           user_id: newUser.id,
           email: newUser.data.email,
           name: newUser.data.name,
@@ -92,7 +92,7 @@ userRoute.post(
 
         return res.status(200).json({
           success: true,
-          loggedInUser: {
+          user: {
             user_id: user.id,
             email: user.data.email,
             name: user.data.name,
