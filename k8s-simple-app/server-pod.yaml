@@ -8,5 +8,6 @@ spec:
   containers:
     - name: server-container
       image: server-image
+      imagePullPolicy: Never
       ports:
         - containerPort: 8000
