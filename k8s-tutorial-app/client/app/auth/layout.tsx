@@ -8,7 +8,7 @@ export default function AuthLayout({
   return (
     <>
       <Nav />
-      <section className="text-xl flex flex-col items-center">
+      <section className="text-xl fixed left-0 px-[3rem] w-full h-[100vh]">
         {children}
       </section>
     </>
