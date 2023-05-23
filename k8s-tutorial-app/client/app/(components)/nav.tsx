@@ -28,7 +28,7 @@ function Nav() {
 
   if (ctx.isLoggedIn) {
     navContent = (
-      <section className="flex justify-between w-[13rem]">
+      <section>
         <li className="transition-all hover:transform hover:scale-110">
           <Link
             href="/"
@@ -47,18 +47,7 @@ function Nav() {
         <li>
           <Link href="">Home</Link>
         </li>
-        <section className="flex justify-between w-[13rem]">
-          <li className="transition-all hover:transform hover:scale-110">
-            <Link href="/auth/login">
-              Log In
-            </Link>
-          </li>
-          <li className="transition-all hover:transform hover:scale-110">
-            <Link href="/auth/signup">
-              Sign Up
-            </Link>
-          </li>
-        </section>
+        {navContent}
       </ul>
     </nav>
   );

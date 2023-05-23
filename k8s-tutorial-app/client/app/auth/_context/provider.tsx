@@ -9,14 +9,14 @@ type AuthContextProp = {
   setIsLoggedIn: (isLoggedIn: boolean) => void;
 }
 
-const AuthContext = createContext<AuthContextProp>({
+export const AuthContext = createContext<AuthContextProp>({
   username: null,
   isLoggedIn: false,
   setUsername: () => {},
   setIsLoggedIn: () => {},
 });
 
-function AuthContextProvider(props: {children: ReactNode}) {
+export default function AuthContextProvider(props: {children: ReactNode}) {
   const {children} = props;
 
   const [ username, setUsername ] = useState<string | null>(null);
@@ -28,5 +28,3 @@ function AuthContextProvider(props: {children: ReactNode}) {
     </AuthContext.Provider>
   )
 }
-
-export { AuthContext, AuthContextProvider }
