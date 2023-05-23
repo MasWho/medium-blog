@@ -1,45 +1,43 @@
-class Database {
-  private static instance: Database;
-  private store: any;
+import pg from 'pg';
+import { Sequelize } from "sequelize";
+import initialiseEnv from "../../config";
+initialiseEnv();
+
+const DB_USER = process.env.DB_USER;
+const DB_HOST = process.env.DB_HOST;
+const DB_NAME = process.env.DB_NAME;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+const DB_PORT = process.env.DB_PORT;
+
+export class DBConnection {
+  private static instance: DBConnection;
+  private connection: Sequelize;
 
   private constructor() {
-    this.store = {
-      'users': []
-    };
+    this.connection = new Sequelize(`postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`, {
+      dialectModule: pg,
+    });
+    this.connect();
   }
 
-  public static getInstance(): Database {
-    if (!Database.instance) {
-        Database.instance = new Database();
+  private async connect(): Promise<void> {
+    try {
+      await this.connection.authenticate();
+      console.log('Connection has been established successfully.');
+    } catch (error) {
+      console.error('Unable to connect to the database:', error);
+    }
+  }
+
+  public static getInstance(): DBConnection {
+    if (!DBConnection.instance) {
+        DBConnection.instance = new DBConnection();
     }
 
-    return Database.instance;
+    return DBConnection.instance;
   }
 
-  public get(key: string): any {
-    return this.store[key];
-  }
-
-  public insert(key: string, value: any): void {
-    this.store[key].push(value);
-  }
-
-  public update(key: string, value: any): void {
-    const values = this.store[key];
-    values.forEach((v: any, i: number) => {
-      if (v.id === value.id) {
-        values[i] = value;
-      }
-    });
-    this.store[key] = values;
-  }
-
-  public delete(key: string, id: string): void {
-    const values = this.store[key];
-    const newValues = values.filter((v: any) => v.id !== id);
-    this.store[key] = newValues;
+  public getConnection(): Sequelize {
+    return this.connection;
   }
 }
-
-const database = Database.getInstance();
-export default database;

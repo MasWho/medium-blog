@@ -2,9 +2,11 @@
 
 import { FormEvent, useContext } from "react";
 import { AuthContext } from "../_context/provider";
+import { useRouter } from "next/navigation";
 
 function Signup() {
   const ctx = useContext(AuthContext);
+  const router = useRouter();
 
   const submitFormHandler = async (event: FormEvent) => {
     event.preventDefault();
@@ -26,6 +28,7 @@ function Signup() {
       if(data.success) {
         ctx.setUsername(target.username.value);
         ctx.setIsLoggedIn(true);
+        router.push('/');
       }
     } catch (error) {
       console.log(error);

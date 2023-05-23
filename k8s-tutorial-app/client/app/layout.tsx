@@ -1,6 +1,8 @@
 import { Metadata } from "next"
 import "./(styles)/global.css"
 import AuthContextProvider from "./auth/_context/provider"
+import initialiseEnv from "./config";
+initialiseEnv();
 
 export const metadata: Metadata = {
   title: 'Create Next App',
