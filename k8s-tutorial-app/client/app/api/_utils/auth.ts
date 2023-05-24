@@ -17,3 +17,8 @@ export const validateUser = async (
   if (userExists) return true;
   return false;
 };
+
+export const getUser = async (username: string) => {
+  const user = await User.findOne({where: {username}});
+  return user;
+}

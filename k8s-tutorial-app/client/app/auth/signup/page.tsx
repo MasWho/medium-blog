@@ -1,11 +1,12 @@
 'use client'
 
-import { FormEvent, useContext } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { AuthContext } from "../_context/provider";
 import { useRouter } from "next/navigation";
 import { ToastContext, ToastIntent } from "@/app/(components)/toast/context";
 
 function Signup() {
+  const [loading, setLoading] = useState<boolean>(false);
   const ctx = useContext(AuthContext);
   const toastCtx = useContext(ToastContext);
   const router = useRouter();
@@ -17,6 +18,7 @@ function Signup() {
       password: { value: string };
     };
 
+    setLoading(true);
     try {
       const res = await fetch('/api/signup', {
         method: 'POST',
@@ -36,7 +38,7 @@ function Signup() {
       console.log(error);
       toastCtx.showToast({message: 'User Creation Failed', intent: ToastIntent.ERROR, delay: 2})
     }
-
+    setLoading(false);
   }
 
   return (
@@ -46,7 +48,11 @@ function Signup() {
       <input id="username" name="username" type="text" className="mb-[3rem] text-black p-[0.2rem]"/>
       <label htmlFor="password">Password</label>
       <input id="password" name="password" type="password" className="mb-[3rem] text-black p-[0.2rem]"/>
-      <button className="border border-white w-[10rem] py-[0.4rem] mx-auto hover:bg-white/50">Confirm</button>
+      {
+        loading 
+          ? <p className="text-center py-[0.4rem] border border-transparent">Loading...</p> 
+          : <button className="border border-white w-[10rem] py-[0.4rem] mx-auto hover:bg-white/50">Confirm</button>
+      }
     </form>
   )
 };
