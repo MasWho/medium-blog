@@ -1,19 +1,19 @@
 'use client'
 
-import { ReactNode, createContext, useState } from "react"
+import { ReactNode, createContext, useEffect, useState } from "react"
 
 type AuthContextProp = {
   username: string | null;
   isLoggedIn: boolean;
-  setUsername: (username: string | null) => void;
-  setIsLoggedIn: (isLoggedIn: boolean) => void;
+  loginUser: (username: string) => void;
+  logoutUser: () => void;
 }
 
 export const AuthContext = createContext<AuthContextProp>({
   username: null,
   isLoggedIn: false,
-  setUsername: () => {},
-  setIsLoggedIn: () => {},
+  loginUser: () => {},
+  logoutUser: () => {},
 });
 
 export default function AuthContextProvider(props: {children: ReactNode}) {
@@ -22,8 +22,28 @@ export default function AuthContextProvider(props: {children: ReactNode}) {
   const [ username, setUsername ] = useState<string | null>(null);
   const [ isLoggedIn, setIsLoggedIn ] = useState<boolean>(false);
 
+  useEffect(() => {
+    const alreadyLoggedIn = localStorage.getItem('user');
+    if(alreadyLoggedIn) {
+      setUsername(username);
+      setIsLoggedIn(true);
+    }
+  }, [])
+
+  const loginUser = (username: string) => {
+    setUsername(username);
+    setIsLoggedIn(true);
+    localStorage.setItem('user', username);
+  };
+
+  const logoutUser = () => {
+    setUsername(null);
+    setIsLoggedIn(false);
+    localStorage.removeItem('user');
+  }
+
   return (
-    <AuthContext.Provider value={{username, isLoggedIn, setUsername, setIsLoggedIn}}>
+    <AuthContext.Provider value={{username, isLoggedIn, loginUser, logoutUser}}>
       {children}
     </AuthContext.Provider>
   )

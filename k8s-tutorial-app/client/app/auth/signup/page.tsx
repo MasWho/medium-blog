@@ -3,9 +3,11 @@
 import { FormEvent, useContext } from "react";
 import { AuthContext } from "../_context/provider";
 import { useRouter } from "next/navigation";
+import { ToastContext, ToastIntent } from "@/app/(components)/toast/context";
 
 function Signup() {
   const ctx = useContext(AuthContext);
+  const toastCtx = useContext(ToastContext);
   const router = useRouter();
 
   const submitFormHandler = async (event: FormEvent) => {
@@ -26,12 +28,13 @@ function Signup() {
       const data = await res.json();
       if(data.error) throw new Error(data.error);
       if(data.success) {
-        ctx.setUsername(target.username.value);
-        ctx.setIsLoggedIn(true);
+        ctx.loginUser(target.username.value);
+        toastCtx.showToast({message: 'User Created', intent: ToastIntent.SUCCESS, delay: 2})
         router.push('/');
       }
     } catch (error) {
       console.log(error);
+      toastCtx.showToast({message: 'User Creation Failed', intent: ToastIntent.ERROR, delay: 2})
     }
 
   }

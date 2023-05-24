@@ -3,9 +3,11 @@
 import { FormEvent, useContext } from "react";
 import { AuthContext } from "../_context/provider";
 import { useRouter } from "next/navigation";
+import { ToastContext, ToastIntent } from "@/app/(components)/toast/context";
 
 function Login() {
   const ctx = useContext(AuthContext);
+  const toastCtx = useContext(ToastContext);
   const router = useRouter();
 
   const submitFormHandler = async (event: FormEvent) => {
@@ -27,11 +29,12 @@ function Login() {
       const data = await res.json();
       if(data.error) throw new Error(data.error);
       if(data.success) {
-        ctx.setUsername(target.username.value);
-        ctx.setIsLoggedIn(true);
+        ctx.loginUser(target.username.value);
+        toastCtx.showToast({message: 'Login Success', intent: ToastIntent.SUCCESS, delay: 2})
         router.push('/');
       }
     } catch (error) {
+      toastCtx.showToast({message: 'Error Loging in', intent: ToastIntent.ERROR, delay: 2})
       console.log(error);
     }
   }

@@ -3,9 +3,11 @@
 import Link from "next/link";
 import { useContext } from "react";
 import { AuthContext } from "../auth/_context/provider";
+import { ToastContext, ToastIntent } from "./toast/context";
 
 function Nav() {
   const ctx = useContext(AuthContext);
+  const toastCtx = useContext(ToastContext);
 
   let navContent = (
     <section className="flex justify-between w-[13rem]">
@@ -23,7 +25,8 @@ function Nav() {
   );
 
   const logoutHandler = async () => {
-    ctx.setIsLoggedIn(false);
+    ctx.logoutUser();
+    toastCtx.showToast({ message: "Logged Out", intent: ToastIntent.INFO, delay: 2 });
   };
 
   if (ctx.isLoggedIn) {

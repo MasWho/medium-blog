@@ -2,6 +2,7 @@ import { Metadata } from "next"
 import "./(styles)/global.css"
 import AuthContextProvider from "./auth/_context/provider"
 import initialiseEnv from "./config";
+import ToastContextProvider from "./(components)/toast/context";
 initialiseEnv();
 
 export const metadata: Metadata = {
@@ -15,10 +16,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" id="app">
       <body className="bg-slate-800 text-white px-[3rem]">
         <AuthContextProvider>
-          {children}
+          <ToastContextProvider>
+            {children}
+          </ToastContextProvider>
         </AuthContextProvider>
       </body>
     </html>
