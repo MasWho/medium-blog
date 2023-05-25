@@ -1,4 +1,4 @@
-import pg from 'pg';
+const pg = require('pg');
 import { Sequelize } from "sequelize";
 import initialiseEnv from "../../config";
 initialiseEnv();
