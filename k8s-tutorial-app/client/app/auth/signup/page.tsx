@@ -2,14 +2,12 @@
 
 import { FormEvent, useContext, useState } from "react";
 import { AuthContext } from "../_context/provider";
-import { useRouter } from "next/navigation";
 import { ToastContext, ToastIntent } from "@/app/(components)/toast/context";
 
 function Signup() {
   const [loading, setLoading] = useState<boolean>(false);
   const ctx = useContext(AuthContext);
   const toastCtx = useContext(ToastContext);
-  const router = useRouter();
 
   const submitFormHandler = async (event: FormEvent) => {
     event.preventDefault();
@@ -32,7 +30,6 @@ function Signup() {
       if(data.success) {
         ctx.loginUser(target.username.value);
         toastCtx.showToast({message: 'User Created', intent: ToastIntent.SUCCESS, delay: 2})
-        router.push('/');
       }
     } catch (error) {
       console.log(error);

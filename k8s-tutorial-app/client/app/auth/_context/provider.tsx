@@ -1,6 +1,7 @@
 'use client'
 
 import { ReactNode, createContext, useEffect, useState } from "react"
+import { useRouter } from "next/navigation";
 
 type AuthContextProp = {
   username: string | null;
@@ -21,12 +22,14 @@ export default function AuthContextProvider(props: {children: ReactNode}) {
 
   const [ username, setUsername ] = useState<string | null>(null);
   const [ isLoggedIn, setIsLoggedIn ] = useState<boolean>(false);
+  const router = useRouter();
 
   useEffect(() => {
     const alreadyLoggedIn = localStorage.getItem('user');
     if(alreadyLoggedIn) {
       setUsername(username);
       setIsLoggedIn(true);
+      router.push('feature');
     }
   }, [])
 
@@ -34,6 +37,7 @@ export default function AuthContextProvider(props: {children: ReactNode}) {
     setUsername(username);
     setIsLoggedIn(true);
     localStorage.setItem('user', username);
+    router.push('feature');
   };
 
   const logoutUser = () => {
