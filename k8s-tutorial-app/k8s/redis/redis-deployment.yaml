@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+spec:
+  # NOTE: Only one pod for local setup, this is not good for prod setup!
+  replicas: 1
+  selector:
+    matchLabels:
+      component: redis
+  template:
+    metadata:
+      labels:
+        component: redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:7.0-alpine
+        # For container startup, run 'redis-server /redis/redis.conf'
+        command:
+          - redis-server
+          - "/redis/redis.conf"
+        # Normal workload will provision 16MB memory and 63 millicpu time, limits are doubled
+        resources:
+          requests:
+            memory: "16Mi"
+            cpu: "63m"
+          limits:
+            memory: "32Mi"
+            cpu: "125m"
+        ports:
+        - containerPort: 6379
+        # These defines paths withinm container environment that maps to volumes on Pod
+        volumeMounts:
+          - mountPath: /redis-data
+            name: data
+          - mountPath: /redis
+            name: config
+      # These volumes exists on the Pod
+      volumes:
+        - name: data
+          emptyDir: {}
+        # expose data in data.redis-config from the redis-config ConfigMap as /redis/redis.conf inside the Pod
+        - name: config
+          configMap:
+            name: redis-config
+            items:
+            - key: redis-config
+              path: redis.conf
+
