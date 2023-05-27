@@ -1,4 +1,4 @@
-import { User } from "../_db/schema";
+import { User } from "./schema";
 
 export const createUser = async (
   username: string,

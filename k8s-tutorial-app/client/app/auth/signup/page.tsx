@@ -2,7 +2,7 @@
 
 import { FormEvent, useContext, useState } from "react";
 import { AuthContext } from "../_context/provider";
-import { ToastContext, ToastIntent } from "@/app/(components)/toast/context";
+import { ToastContext, ToastIntent } from "@/app/_components/toast/context";
 
 function Signup() {
   const [loading, setLoading] = useState<boolean>(false);

@@ -1,7 +1,5 @@
 const pg = require('pg');
 import { Sequelize } from "sequelize";
-import initialiseEnv from "../../config";
-initialiseEnv();
 
 const DB_USER = process.env.DB_USER;
 const DB_HOST = process.env.DB_HOST;

@@ -1,6 +1,6 @@
 'use client'
 
-import Nav from "./(components)/nav"
+import Nav from "./_components/nav"
 
 function PreLogin() {
   return (
