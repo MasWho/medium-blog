@@ -1,12 +1,17 @@
 // Run this file when setting up the database for the first time
-import { STRING } from "sequelize";
+import { Model, STRING, NUMBER } from "sequelize";
 import { DBConnection } from "./db";
 
 const dbConnection = DBConnection.getInstance().getConnection();
 
-export const User = dbConnection.define(
+export const User = dbConnection.define<Model<{id: number, username: string, password: string}, any>>(
   'user', 
   {
+    id: {
+      type: NUMBER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     username: {
       type: STRING,
       allowNull: false

@@ -25,13 +25,13 @@ export default class WorkerService {
 
     this._subscriber.on('message', async (channel, message) => {
       if(channel === 'jobs') {
-        const {jobId, jobDetails} = JSON.parse(message);
-        this.handleJobEvent(jobId, jobDetails);
+        const {jobId, userId} = JSON.parse(message);
+        this.handleJobEvent(jobId, userId);
       }
     });
   }
 
-  private async handleJobEvent(jobId: string, jobDetails: any) {
+  private async handleJobEvent(jobId: string, userId: number) {
     console.log(`[Worker] ${this._id} Received job ${jobId}`);
     const jobLock = await this._redis.setnx(jobId, this._id);
     if(jobLock === 0) {
@@ -39,17 +39,18 @@ export default class WorkerService {
       return;
     }
 
-    const result = await this.doWork(jobDetails);
+    const result = await this.doWork();
+    const resultWithUserId = {...result, userId};
     this._redis.del(jobId);
-    this._redis.publish('completed_jobs', JSON.stringify({jobId, result}));
+    this._redis.publish('completed_jobs', JSON.stringify({jobId, result: resultWithUserId}));
     console.log(`[Worker] Job ${jobId} completed in ${result.time} seconds by ${this._id}`);
   }
 
-  async doWork(job: any) {
+  async doWork() {
     // Generate a random number between 1 and 5
     const time = Math.floor(Math.random() * 5) + 1;
     // Sleep for that many seconds
     await new Promise((resolve) => setTimeout(resolve, time * 1000));
-    return {id: this._id, time, job};
+    return {id: this._id, time};
   }
 }

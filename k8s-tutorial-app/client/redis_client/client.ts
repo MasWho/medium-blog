@@ -1,6 +1,6 @@
 import Redis from 'ioredis';
 
-function createRedisInstance() {
+export function createRedisInstance() {
   try {
     const redis = new Redis('redis://localhost:6379');
     redis.on('error', (error: unknown) => {

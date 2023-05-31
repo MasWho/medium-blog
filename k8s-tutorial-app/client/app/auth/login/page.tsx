@@ -29,7 +29,7 @@ function Login() {
       const data = await res.json();
       if(data.error) throw new Error(data.error);
       if(data.success) {
-        ctx.loginUser(target.username.value);
+        ctx.loginUser(target.username.value, data.userId);
         toastCtx.showToast({message: 'Login Success', intent: ToastIntent.SUCCESS, delay: 2})
       }
     } catch (error) {

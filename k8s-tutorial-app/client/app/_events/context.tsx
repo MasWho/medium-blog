@@ -1,49 +1,66 @@
-'use client'
+"use client";
 
-import { ReactNode, createContext, useEffect, useState } from "react"
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import ClientConnection from "./ClientConnection";
+import { AuthContext } from "../auth/_context/provider";
 
 type EventsContextProps = {
-  data: any,
-  loading: boolean,
-  setLoading: (loading: boolean) => void,
-  setData: (data: any) => void,
-}
+  data: any;
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+};
 
 export const EventsContext = createContext<EventsContextProps>({
   data: null,
   loading: false,
   setLoading: () => {},
-  setData: () => {},
 });
 
-export default function EventsContextProvider(props: {children: ReactNode}) {
-  const {children} = props;
+export default function EventsContextProvider(props: {children: ReactNode;}) {
+  const { children } = props;
+  const authCtx = useContext(AuthContext);
   const [loading, setLoading] = useState<boolean>(false);
-  const [data, setData] = useState<any>();
+  const [data, setData] = useState<any>(null);
 
   const handleEvent = (message: MessageEvent) => {
-    const data = message.data;
+    const data = JSON.parse(message.data);
     setData(data);
     setLoading(false);
-  }
+  };
 
   useEffect(() => {
     let clientConnection: ClientConnection | null = null;
-    if('EventSource' in window) {
-      clientConnection = new ClientConnection({url: '/api/events', onMessage: handleEvent});
+    if ("EventSource" in window) {
+      if (authCtx.userId) {
+        clientConnection = new ClientConnection({
+          url: `/api/events?user=${authCtx.userId}`,
+          onMessage: handleEvent,
+        });
+      }
     }
 
     return () => {
-      if(clientConnection) {
+      if (clientConnection) {
         clientConnection.source.close();
       }
-    }
-  }, []);
+    };
+  }, [authCtx.userId]);
 
   return (
-    <EventsContext.Provider value={{data, setLoading, setData, loading}}>
+    <EventsContext.Provider
+      value={{
+        data,
+        setLoading,
+        loading,
+      }}
+    >
       {children}
     </EventsContext.Provider>
-  )
+  );
 }

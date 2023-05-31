@@ -1,4 +1,4 @@
-import { getUser } from '../../db/auth';
+import { getUser, createUser } from '../../db/auth';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 const postHandler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -13,7 +13,9 @@ const postHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(403).json({error: 'User already exists'});
       return;
     }
-    res.status(200).json({success: true});
+
+    const newUser = await createUser(username, password);
+    res.status(200).json({success: true, userId: newUser!.get('id')});
   } catch (error) {
     res.status(500).json({error: 'Something went wrong'});
   }
@@ -24,3 +26,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     postHandler(req, res);
   }
 }
+
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+};
