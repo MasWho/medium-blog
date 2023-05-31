@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import Button from "../_components/button";
 import { AuthContext } from "../auth/_context/provider";
 import { EventsContext } from "../_events/context";
