@@ -25,13 +25,13 @@ export default class WorkerService {
 
     this._subscriber.on('message', async (channel, message) => {
       if(channel === 'jobs') {
-        const {jobId, userId} = JSON.parse(message);
-        this.handleJobEvent(jobId, userId);
+        const {jobId, userId, sessionToken} = JSON.parse(message);
+        this.handleJobEvent(jobId, userId, sessionToken);
       }
     });
   }
 
-  private async handleJobEvent(jobId: string, userId: number) {
+  private async handleJobEvent(jobId: string, userId: number, sessionToken: string) {
     console.log(`[Worker] ${this._id} Received job ${jobId}`);
     const jobLock = await this._redis.setnx(jobId, this._id);
     if(jobLock === 0) {
@@ -40,9 +40,9 @@ export default class WorkerService {
     }
 
     const result = await this.doWork();
-    const resultWithUserId = {...result, userId};
+    const resultWithUserDetails = {...result, userId, sessionToken};
     this._redis.del(jobId);
-    this._redis.publish('completed_jobs', JSON.stringify({jobId, result: resultWithUserId}));
+    this._redis.publish('completed_jobs', JSON.stringify({jobId, result: resultWithUserDetails}));
     console.log(`[Worker] Job ${jobId} completed in ${result.time} seconds by ${this._id}`);
   }
 

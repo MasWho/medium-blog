@@ -16,6 +16,7 @@ function Feature() {
         method: 'POST',
         body: JSON.stringify({
           userId: authCtx.userId,
+          sessionToken: authCtx.sessionToken
         })
       });
     } catch (err) {

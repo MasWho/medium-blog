@@ -37,9 +37,9 @@ export default function EventsContextProvider(props: {children: ReactNode;}) {
   useEffect(() => {
     let clientConnection: ClientConnection | null = null;
     if ("EventSource" in window) {
-      if (authCtx.userId) {
+      if (authCtx.userId && authCtx.sessionToken) {
         clientConnection = new ClientConnection({
-          url: `/api/events?user=${authCtx.userId}`,
+          url: `/api/events?user=${authCtx.userId}&sessionToken=${authCtx.sessionToken}`,
           onMessage: handleEvent,
         });
       }
@@ -50,7 +50,7 @@ export default function EventsContextProvider(props: {children: ReactNode;}) {
         clientConnection.source.close();
       }
     };
-  }, [authCtx.userId]);
+  }, [authCtx.userId, authCtx.sessionToken]);
 
   return (
     <EventsContext.Provider
