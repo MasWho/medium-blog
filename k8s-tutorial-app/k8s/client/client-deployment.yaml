@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: client-deployment
+  namespace: k8s-tut
 spec:
   selector:
     matchLabels:
@@ -13,10 +14,11 @@ spec:
     spec:
       containers:
       - name: client
-        image: maswho/k8s-client
+        image: k8s-client
+        imagePullPolicy: Never
         resources:
           limits:
-            memory: "128Mi"
-            cpu: "500m"
+            memory: "500Mi"
+            cpu: "1"
         ports:
         - containerPort: 3000
