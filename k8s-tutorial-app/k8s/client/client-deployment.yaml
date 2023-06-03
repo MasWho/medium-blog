@@ -28,3 +28,28 @@ spec:
               configMapKeyRef:
                 name: cluster-env
                 key: redis_url
+          - name: DB_USER
+            valueFrom:
+              configMapKeyRef:
+                name: cluster-env
+                key: db_user
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: cluster-env
+                key: db_host
+          - name: DB_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: cluster-env
+                key: db_name
+          - name: DB_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: cluster-env
+                key: db_password
+          - name: DB_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: cluster-env
+                key: db_port
