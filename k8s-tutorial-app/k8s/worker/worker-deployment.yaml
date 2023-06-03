@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-deployment
+  namespace: k8s-tut
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      component: worker-deployment
+  template:
+    metadata:
+      labels:
+        component: worker-deployment
+    spec:
+      containers:
+      - name: worker
+        image: k8s-worker
+        imagePullPolicy: Never
+        resources:
+          limits:
+            memory: "200Mi"
+            cpu: "0.1"
+        env:
+          - name: REDIS_URL
+            valueFrom:
+              configMapKeyRef:
+                name: cluster-env
+                key: redis_url

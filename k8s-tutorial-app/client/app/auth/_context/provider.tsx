@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode, createContext, useEffect, useState } from "react"
+import { ReactNode, createContext, useCallback, useEffect, useState } from "react"
 import { useRouter } from "next/navigation";
 
 type AuthContextProp = {
@@ -30,18 +30,7 @@ export default function AuthContextProvider(props: {children: ReactNode}) {
   const [ sessionToken, setSessionToken ] = useState<string | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    const username = localStorage.getItem('username');
-    const userId = localStorage.getItem('userId');
-    const sessionToken = localStorage.getItem('sessionToken');
-    if(username && userId && sessionToken) {
-      loginUser(username!, Number(userId!), sessionToken!);
-    } else {
-      router.push('/');
-    }
-  }, [])
-
-  const loginUser = (username: string, userId: number, sessionToken?: string) => {
+  const loginUser = useCallback((username: string, userId: number, sessionToken?: string) => {
     setUsername(username);
     setIsLoggedIn(true);
     setUserId(userId);
@@ -54,7 +43,18 @@ export default function AuthContextProvider(props: {children: ReactNode}) {
     localStorage.setItem('userId', userId.toString());
     localStorage.setItem('sessionToken', sessionToken);
     router.push('feature');
-  };
+  }, []);
+
+  useEffect(() => {
+    const username = localStorage.getItem('username');
+    const userId = localStorage.getItem('userId');
+    const sessionToken = localStorage.getItem('sessionToken');
+    if(username && userId && sessionToken) {
+      loginUser(username!, Number(userId!), sessionToken!);
+    } else {
+      router.push('/');
+    }
+  }, [loginUser])
 
   const logoutUser = () => {
     setUsername(null);
