@@ -6,11 +6,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      component: client
+      component: client-deployment
   template:
     metadata:
       labels:
-        component: client
+        component: client-deployment
     spec:
       containers:
       - name: client
@@ -22,3 +22,9 @@ spec:
             cpu: "1"
         ports:
         - containerPort: 3000
+        env:
+          - name: REDIS_URL
+            valueFrom:
+              configMapKeyRef:
+                name: cluster-env
+                key: redis_url

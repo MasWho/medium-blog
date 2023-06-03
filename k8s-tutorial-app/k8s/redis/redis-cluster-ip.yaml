@@ -5,7 +5,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    component: redis
+    component: redis-deployment
   ports:
   - port: 6379
     targetPort: 6379

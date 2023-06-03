@@ -19,6 +19,6 @@ spec:
           backend:
             # Associate to client-service
             service:
-              name: client-service
+              name: client-cluster-ip
               port: 
                 number: 3000
