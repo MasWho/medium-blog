@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgres-deployment
+  namespace: k8s-tut
 spec:
   replicas: 1
   selector:
@@ -10,10 +11,39 @@ spec:
   template:
     metadata:
       labels:
-        app: postgres-deployment
+        component: postgres-deployment
     spec:
       containers:
-      - name: postgres
-        image: postgres
-        ports:
-        - containerPort: 5432
+        - name: postgres
+          image: postgres
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432
+          resources:
+            requests:
+              memory: "16Mi"
+              cpu: "63m"
+            limits:
+              memory: "32Mi"
+              cpu: "125m"
+          # Get postgres specific env vars from configMap
+          envFrom:
+            - configMapRef:
+                name: postgres-config
+          env:
+            # This is a secret set by imperative methods
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dbpassword
+                  key: DB_PASSWORD
+          # Map a container directory to a volume which is persistent
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              subPath: postgres
+              name: postgredb
+      # Define volumes for persisting data, use persisted volume claim
+      volumes:
+        - name: postgredb
+          persistentVolumeClaim:
+            claimName: postgres-pv-claim

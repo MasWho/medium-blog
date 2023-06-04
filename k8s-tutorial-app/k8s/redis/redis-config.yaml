@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: redis-config
+  namespace: k8s-tut
 data:
   redis-config: |
     

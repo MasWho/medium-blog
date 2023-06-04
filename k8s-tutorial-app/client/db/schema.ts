@@ -1,5 +1,5 @@
 // Run this file when setting up the database for the first time
-import { Model, STRING, NUMBER } from "sequelize";
+import { Model, STRING, BIGINT } from "sequelize";
 import { DBConnection } from "./db";
 
 const dbConnection = DBConnection.getInstance().getConnection();
@@ -8,7 +8,7 @@ export const User = dbConnection.define<Model<{id: number, username: string, pas
   'user', 
   {
     id: {
-      type: NUMBER,
+      type: BIGINT,
       autoIncrement: true,
       primaryKey: true,
     },

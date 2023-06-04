@@ -43,13 +43,14 @@ spec:
               configMapKeyRef:
                 name: cluster-env
                 key: db_name
-          - name: DB_PASSWORD
-            valueFrom:
-              configMapKeyRef:
-                name: cluster-env
-                key: db_password
           - name: DB_PORT
             valueFrom:
               configMapKeyRef:
                 name: cluster-env
                 key: db_port
+          # This is a secret reference, which typically gets imperatively created
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: dbpassword
+                key: DB_PASSWORD

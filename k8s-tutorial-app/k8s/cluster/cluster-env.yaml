@@ -2,11 +2,11 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cluster-env
+  namespace: k8s-tut
 data:
-  redis_url: 'redis-cluster-ip.k8s-tut.svc.cluster.local'
-  db_host: localhost
+  # Objects within the same cluster and namespace can communicate via services by their names
+  redis_url: redis-cluster-ip
+  db_host: postgres-cluster-ip
   db_port: '5432'
-  db_user: postgres
-  # TODO: Move this to a secret
-  db_password: postgres
+  db_user: admin
   db_name: tut-db

@@ -1,0 +1,13 @@
+# PVC to be associated with the postgres deployment for data persistence
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pv-claim
+  labels:
+    component: postgres-pv-claim
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  accessModes:
+    - ReadWriteMany

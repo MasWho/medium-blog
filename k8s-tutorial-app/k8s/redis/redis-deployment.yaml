@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: redis-deployment
+  namespace: k8s-tut
 spec:
   # NOTE: Only one pod for local setup, this is not good for prod setup!
   replicas: 1

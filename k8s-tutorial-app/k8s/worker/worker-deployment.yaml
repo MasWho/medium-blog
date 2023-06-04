@@ -21,6 +21,7 @@ spec:
           limits:
             memory: "200Mi"
             cpu: "0.1"
+        # This is a secret reference, which typically gets imperatively created
         env:
           - name: REDIS_URL
             valueFrom:

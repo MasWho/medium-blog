@@ -1,11 +1,11 @@
 const pg = require('pg');
 import { Sequelize } from "sequelize";
 
-const DB_USER = process.env.DB_USER;
-const DB_HOST = process.env.DB_HOST;
-const DB_NAME = process.env.DB_NAME;
-const DB_PASSWORD = process.env.DB_PASSWORD;
-const DB_PORT = process.env.DB_PORT;
+const DB_USER = process.env.DB_USER || 'postgres';
+const DB_HOST = process.env.DB_HOST || 'localhost';
+const DB_NAME = process.env.DB_NAME || 'tut-db';
+const DB_PASSWORD = process.env.DB_PASSWORD || 'postgres';
+const DB_PORT = process.env.DB_PORT || 5432;
 
 export class DBConnection {
   private static instance: DBConnection;
