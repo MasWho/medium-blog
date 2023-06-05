@@ -1,6 +1,9 @@
 import { Redis } from "ioredis";
 import {createRedisInstance} from "./redis_client/client";
 
+const JOBS_EVENT_CHANNEL = 'jobs';
+const COMPLETED_JOBS_EVENT_CHANNEL = 'completed_jobs';
+
 export default class WorkerService {
   private _id: string;
   private _redis: Redis;
@@ -14,8 +17,8 @@ export default class WorkerService {
   }
 
   private initialiseSubscriber() {
-    console.log(`[Worker] ${this._id} Initialising subscriber...`)
-    this._subscriber.subscribe('jobs', (error, count) => {
+    console.log(`[Worker] ${this._id} Initialising subscriber...`);
+    this._subscriber.subscribe(JOBS_EVENT_CHANNEL, (error, count) => {
       if (error) {
         console.error('[Worker] Error subscribing to job channel', error);
       } else {
@@ -24,7 +27,7 @@ export default class WorkerService {
     });
 
     this._subscriber.on('message', async (channel, message) => {
-      if(channel === 'jobs') {
+      if(channel === JOBS_EVENT_CHANNEL) {
         const {jobId, userId, sessionToken} = JSON.parse(message);
         this.handleJobEvent(jobId, userId, sessionToken);
       }
@@ -42,7 +45,7 @@ export default class WorkerService {
     const result = await this.doWork();
     const resultWithUserDetails = {...result, userId, sessionToken};
     this._redis.del(jobId);
-    this._redis.publish('completed_jobs', JSON.stringify({jobId, result: resultWithUserDetails}));
+    this._redis.publish(COMPLETED_JOBS_EVENT_CHANNEL, JSON.stringify({jobId, result: resultWithUserDetails}));
     console.log(`[Worker] Job ${jobId} completed in ${result.time} seconds by ${this._id}`);
   }
 
