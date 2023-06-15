@@ -17,10 +17,9 @@ spec:
       containers:
       - name: redis
         image: redis:7.0-alpine
-        # For container startup, run 'redis-server /redis/redis.conf'
+        # For container startup, run 'redis-server'
         command:
           - redis-server
-          - "/redis/redis.conf"
         # Normal workload will provision 16MB memory and 63 millicpu time, limits are doubled
         resources:
           requests:
@@ -41,11 +40,6 @@ spec:
       volumes:
         - name: data
           emptyDir: {}
-        # expose data in data.redis-config from the redis-config ConfigMap as /redis/redis.conf inside the Pod
         - name: config
-          configMap:
-            name: redis-config
-            items:
-            - key: redis-config
-              path: redis.conf
+          emptyDir: {}
 

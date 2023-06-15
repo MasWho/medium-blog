@@ -21,11 +21,11 @@ spec:
             - containerPort: 5432
           resources:
             requests:
-              memory: "16Mi"
-              cpu: "63m"
+              memory: "160Mi"
+              cpu: "500m"
             limits:
-              memory: "32Mi"
-              cpu: "125m"
+              memory: "320Mi"
+              cpu: "1"
           # Get postgres specific env vars from configMap
           envFrom:
             - configMapRef:
