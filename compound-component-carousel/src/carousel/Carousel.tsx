@@ -3,75 +3,79 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import "./styles/carousel.scss";
 
-const Carousel = (props: any) => {
-  const [slideTotal, setSlideTotal] = useState(0);
-  const [slideCurrent, setSlideCurrent] = useState(-1);
-  const [slides, setSlides] = useState([]);
-  const [height, setHeight] = useState("0px");
-  const intervalRef = useRef<any>(null);
-  const nextRef = useRef<any>();
+type CarouselProps = {
+  inputSlides: React.ReactNode[];
+  autoplay?: boolean;
+  interval?: number;
+  onSlideChange?: (currSlideIndex: number) => void;
+  arrows?: boolean;
+  arrowBorders?: boolean;
+}
 
-  useEffect(() => {
-    const locSlides: any = [];
-    props.slides.forEach((slide: any) => {
+const initialSlides = (slides: any) => {
+  const locSlides: any = [];
+  slides.forEach((slide: any) => {
+    const slideobject = {
+      class: "slider-single proactivede",
+      element: slide,
+    };
+    locSlides.push(slideobject);
+  });
+  if (slides.length === 2) {
+    slides.forEach((slide: any) => {
       const slideobject = {
         class: "slider-single proactivede",
         element: slide,
       };
       locSlides.push(slideobject);
     });
-    if (props.slides.length === 2) {
-      props.slides.forEach((slide: any) => {
-        const slideobject = {
-          class: "slider-single proactivede",
-          element: slide,
-        };
-        locSlides.push(slideobject);
-      });
-    }
-    setSlides(locSlides);
-    setSlideTotal(locSlides.length - 1);
-    setSlideCurrent(-1);
-    if (slideCurrent === -1) {
-      setTimeout(() => {
-        nextRef.current.click();
-        if (props.autoplay) {
-          intervalRef.current = setTimeout(() => {
-            nextRef.current.click();
-          }, props.interval);
-        }
-      }, 500);
-    }
-  }, [props.slides]);
+  }
+  return locSlides;
+}
 
+const Carousel = (props: CarouselProps) => {
+  const {inputSlides, arrows, arrowBorders, interval, autoplay, onSlideChange} = props;
+  const [slideCurrent, setSlideCurrent] = useState(-1);
+  const [slides, setSlides] = useState(initialSlides.bind(null, inputSlides));
+  const [height, setHeight] = useState("0px");
+  const intervalRef = useRef<any>(null);
+  const nextRef = useRef<any>();
+
+  // First render will initialise some styling
   useEffect(() => {
     if (slideCurrent === -1) {
       setTimeout(() => {
-        //slideRight();
+        nextRef.current.click();
+        if (autoplay) {
+          intervalRef.current = setTimeout(() => {
+            nextRef.current.click();
+          }, interval);
+        }
       }, 500);
     }
-  }, [slides, slideCurrent]);
+  }, [slideCurrent]);
 
   const slideRight = () => {
-    let preactiveSlide: any;
-    let proactiveSlide: any;
-    let slideCurrentLoc = slideCurrent;
-
     const activeClass = "slider-single active";
     const slide: any = [...slides];
-    if (slideTotal > 1) {
-      if (slideCurrentLoc < slideTotal) {
-        slideCurrentLoc++;
-      } else {
+    const lastSlideIndex = slides.length - 1;
+    if (lastSlideIndex > 1) {
+      let slideCurrentLoc = slideCurrent;
+      if(slideCurrentLoc === -1) {
         slideCurrentLoc = 0;
       }
+      slideCurrentLoc = slideCurrentLoc % lastSlideIndex;
+      const activeSlide: any = slide[slideCurrentLoc];
+      let preactiveSlide: any;
       if (slideCurrentLoc > 0) {
         preactiveSlide = slide[slideCurrentLoc - 1];
       } else {
-        preactiveSlide = slide[slideTotal];
+        preactiveSlide = slide[lastSlideIndex];
       }
-      const activeSlide: any = slide[slideCurrentLoc];
-      if (slideCurrentLoc < slideTotal) {
+
+      let proactiveSlide: any;
+      // const activeSlide: any = slide[slideCurrentLoc];
+      if (slideCurrentLoc < lastSlideIndex) {
         proactiveSlide = slide[slideCurrentLoc + 1];
       } else {
         proactiveSlide = slide[0];
@@ -90,7 +94,7 @@ const Carousel = (props: any) => {
       activeSlide.class = activeClass;
       proactiveSlide.class = "slider-single proactive";
       setSlides(slide);
-      setSlideCurrent(slideCurrentLoc);
+      setSlideCurrent(slideCurrentLoc + 1);
 
       if (document.getElementsByClassName("slider-single active").length > 0) {
         setTimeout(() => {
@@ -100,12 +104,14 @@ const Carousel = (props: any) => {
           }
         }, 500);
       }
-      props.onSlideChange(slideCurrentLoc);
-      if (props.autoplay) {
+      if(onSlideChange) {
+        onSlideChange(slideCurrentLoc);
+      }
+      if (autoplay) {
         clearTimeout(intervalRef.current);
         intervalRef.current = setTimeout(() => {
           nextRef.current.click();
-        }, props.interval);
+        }, interval);
       }
     } else if (slide[0] && slide[0].class !== activeClass) {
       slide[0].class = activeClass;
@@ -115,6 +121,7 @@ const Carousel = (props: any) => {
   };
 
   const slideLeft = () => {
+    const slideTotal = slides.length - 1;
     if (slideTotal > 1) {
       let preactiveSlide: any;
       let proactiveSlide: any;
@@ -150,7 +157,9 @@ const Carousel = (props: any) => {
       proactiveSlide.class = "slider-single proactive";
       setSlides(slide);
       setSlideCurrent(slideCurrentLoc);
-      props.onSlideChange(slideCurrentLoc);
+      if(onSlideChange) {
+        onSlideChange(slideCurrentLoc);
+      }
       if (document.getElementsByClassName("slider-single active").length > 0) {
         setTimeout(() => {
           if (document.getElementsByClassName("slider-single active").length > 0) {
@@ -164,38 +173,43 @@ const Carousel = (props: any) => {
 
   const sliderClass = (direction: any) => {
     let sliderClass = `slider-${direction}`;
-    if (!props.arrows) {
+    if (!arrows) {
       sliderClass = "slider-disabled";
-    } else if (props.arrows && !props.arrowBorders) {
+    } else if (arrows && !arrowBorders) {
       sliderClass = `slider-${direction}-noborders`;
     }
     return sliderClass;
   };
 
+  let content = null;
+  if (slides && slides.length > 0) {
+    content = (
+      <div className="slider-container">
+        <div className="slider-content">
+          {slides.map((slider: any, index: number) => (
+            <div className={slider.class} key={index}>
+              <div className={sliderClass("left")} onClick={slideLeft}>
+                <div>
+                  <FontAwesomeIcon icon={faArrowLeft} />
+                </div>
+              </div>
+              <div className={sliderClass("right")} onClick={slideRight} ref={nextRef}>
+                <div>
+                  <FontAwesomeIcon icon={faArrowRight} />
+                </div>
+              </div>
+
+              <div className="slider-single-content">{slider.element}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="react-3d-carousel" style={{ height }}>
-      {slides && slides.length > 0 && (
-        <div className="slider-container">
-          <div className="slider-content">
-            {slides.map((slider: any, index) => (
-              <div className={slider.class} key={index}>
-                <div className={sliderClass("left")} onClick={slideLeft}>
-                  <div>
-                    <FontAwesomeIcon icon={faArrowLeft} />
-                  </div>
-                </div>
-                <div className={sliderClass("right")} onClick={slideRight} ref={nextRef}>
-                  <div>
-                    <FontAwesomeIcon icon={faArrowRight} />
-                  </div>
-                </div>
-
-                <div className="slider-single-content">{slider.element}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {content}
     </div>
   );
 };

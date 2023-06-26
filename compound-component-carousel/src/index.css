@@ -7,3 +7,10 @@
 body {
   font-family: 'Montserrat', sans-serif;
 }
+
+.main {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
