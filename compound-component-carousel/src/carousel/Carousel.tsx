@@ -7,8 +7,6 @@ type CarouselProps = {
   images: ReactNode[];
   autoplay?: boolean;
   interval?: number;
-  arrows?: boolean;
-  arrowBorders?: boolean;
   height?: string;
 }
 
@@ -33,10 +31,50 @@ const initialSlides = (images: ReactNode[]): Slide[] => {
     })
   }
   return slides;
+};
+
+const SliderArrow = (props: {direction: 'left' | 'right', onSlide: VoidFunction}) => {
+  const { direction, onSlide } = props;
+  return (
+    <div className={`slider-${direction}`} onClick={onSlide}>
+      <div>
+        <FontAwesomeIcon 
+          size="lg" 
+          icon={direction === 'left' ? faArrowLeft : faArrowRight} 
+        />
+      </div>
+    </div>
+  );
+};
+
+const SingleSlide = (props: { slide: Slide, onSlideLeft: VoidFunction, onSlideRight: VoidFunction }) => {
+  const { slide, onSlideLeft, onSlideRight } = props;
+  return (
+    <div className={slide.class}>
+      <SliderArrow direction="left" onSlide={onSlideLeft}/>
+      <SliderArrow direction="right" onSlide={onSlideRight}/>
+      <div className="slider-single-content">{slide.element}</div>
+    </div>
+  );
+};
+
+const Paging = (props: {numSlides: number, currentSlideIndex: number}) => {
+  const { numSlides, currentSlideIndex } = props;
+  const pagingElements = Array.from({length: numSlides}, (_, idx) => {
+    const isActive = idx === currentSlideIndex;
+    return <span className={`slide-paging-element ${isActive ? 'active' : ''}`}/>;
+  });
+
+  return <div className="slide-paging">{pagingElements}</div>;
+}
+
+const Title = (props: {text: string}) => {
+  const { text } = props;
+  return <p className="slide-title">{text}</p>
 }
 
 const Carousel = (props: CarouselProps) => {
-  const {images, arrows, arrowBorders, interval, autoplay, height = '300px'} = props;
+  const {images, interval, autoplay, height = '300px'} = props;
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [slides, setSlides] = useState(initialSlides.bind(null, images));
   const intervalRef = useRef<number>();
@@ -130,38 +168,27 @@ const Carousel = (props: CarouselProps) => {
     setCurrentSlideIndex(nextSlideIndex);
   };
 
-  const sliderClass = (direction: 'left' | 'right') => {
-    let sliderClass = `slider-${direction}`;
-    if (!arrows) {
-      sliderClass = "slider-disabled";
-    } else if (arrows && !arrowBorders) {
-      sliderClass = `slider-${direction}-noborders`;
-    }
-    return sliderClass;
-  };
-
   let content = null;
-  if (slides && slides.length > 0) {
+  const hasSlides = slides && slides.length > 0;
+  if (hasSlides) {
+    const slideComponents = slides.map((slide, index: number) => (
+      <SingleSlide 
+        slide={slide} 
+        onSlideLeft={slideLeft} 
+        onSlideRight={slideRight} 
+        key={index} 
+      />
+    ));
     content = (
       <div className="slider-container">
+        <Title text="Carousel" />
         <div className="slider-content">
-          {slides.map((slide, index: number) => (
-            <div className={slide.class} key={index}>
-              <div className={sliderClass("left")} onClick={slideLeft}>
-                <div>
-                  <FontAwesomeIcon icon={faArrowLeft} />
-                </div>
-              </div>
-              <div className={sliderClass("right")} onClick={slideRight} ref={nextRef}>
-                <div>
-                  <FontAwesomeIcon icon={faArrowRight} />
-                </div>
-              </div>
-
-              <div className="slider-single-content">{slide.element}</div>
-            </div>
-          ))}
+          {slideComponents}
         </div>
+        <Paging 
+          numSlides={slides.length} 
+          currentSlideIndex={currentSlideIndex}
+        />
       </div>
     );
   }
