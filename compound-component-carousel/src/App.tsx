@@ -13,7 +13,7 @@ function App() {
 
   return (
     <div className="main">
-      <Carousel images={images} autoplay interval={2000}/>
+      <Carousel images={images} autoplay interval={3000} showArrow title="Carousel" showPaging />
     </div>
   );
 }
