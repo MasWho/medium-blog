@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import "./App.css";
 import Carousel from "./carousel/Carousel";
 
 function App() {
@@ -12,16 +11,14 @@ function App() {
   ];
 
   return (
-    <div className="main">
-      <Carousel 
-        images={images} 
-        autoplay 
-        interval={3000} 
-        showArrow 
-        title="Carousel" 
-        showPaging 
-      />
-    </div>
+    <Carousel 
+      images={images} 
+      autoplay 
+      interval={3000} 
+      showArrow 
+      title="Carousel" 
+      showPaging 
+    />
   );
 }
 
