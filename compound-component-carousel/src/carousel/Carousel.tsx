@@ -1,84 +1,12 @@
 // Project dependencies
-import { useState, useEffect, useRef, ReactNode, forwardRef } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { useState, useEffect, useRef, ReactNode } from "react";
+import { CarouselProps, Slide } from "./types/Carousel";
 
 // Styling
 import "./styles/carousel.scss";
-
-// Types
-type CarouselProps = {
-  images: ReactNode[];
-  autoplay?: boolean;
-  interval?: number;
-  height?: string;
-  showPaging?: boolean;
-  showArrow?: boolean;
-  title?: string;
-};
-
-type Slide = {
-  class: string;
-  element: ReactNode;
-};
-
-type SliderArrowProps = { direction: "left" | "right"; onSlide: VoidFunction; show: boolean };
-
-type SingleSlideProps = { slide: Slide; onSlideLeft: VoidFunction; onSlideRight: VoidFunction; showArrow?: boolean };
-
-// Components
-
-/**
- * This component is used to display the arrows that allow the user to move back and forth between slides in the slider.
- */
-const SliderArrow = forwardRef<HTMLDivElement, SliderArrowProps>((props, ref) => {
-  const { direction, onSlide, show } = props;
-  return (
-    <div className={`slider-${direction}`} onClick={onSlide} ref={ref} style={{ display: show ? "" : "none" }}>
-      <div>
-        <FontAwesomeIcon size="lg" icon={direction === "left" ? faArrowLeft : faArrowRight} />
-      </div>
-    </div>
-  );
-});
-
-
-/**
- * This code creates a single slide in a slide pack with the ability to slide left and right.
- */
-const SingleSlide = forwardRef<HTMLDivElement, SingleSlideProps>((props, ref) => {
-  const { slide, onSlideLeft, onSlideRight, showArrow = false } = props;
-  return (
-    <div className={slide.class}>
-      <SliderArrow direction="left" onSlide={onSlideLeft} show={showArrow} />
-      <SliderArrow direction="right" onSlide={onSlideRight} ref={ref} show={showArrow} />
-      <div className="slider-single-content">{slide.element}</div>
-    </div>
-  );
-});
-
-/**
- * Component that displays the current slide index and the total number of slides.
- */
-const Paging = (props: { numSlides: number; currentSlideIndex: number }) => {
-  const { numSlides, currentSlideIndex } = props;
-  const pagingElements = Array.from({ length: numSlides }, (_, idx) => {
-    const isActive = idx === currentSlideIndex;
-    return <span className={`slide-paging-element ${isActive ? "active" : ""}`} />;
-  });
-
-  return <div className="slide-paging">{pagingElements}</div>;
-};
-
-/**
- * Component that displays the title of the slide.
- */
-const Title = (props: { text: string }) => {
-  const { text } = props;
-  return <p className="slide-title">{text}</p>;
-};
-
-// Main component
+import SingleSlide from "./components/SingleSlide";
+import Title from "./components/Title";
+import Paging from "./components/Paging";
 
 /**
  * Initialise the slides state for the carousel.
