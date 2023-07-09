@@ -7,7 +7,7 @@ type SliderArrowProps = { direction: "left" | "right"; onSlide: VoidFunction; sh
 /**
  * This component is used to display the arrows that allow the user to move back and forth between slides in the slider.
  */
-const SliderArrow = forwardRef<HTMLDivElement, SliderArrowProps>((props, ref) => {
+const SlideArrow = forwardRef<HTMLDivElement, SliderArrowProps>((props, ref) => {
   const { direction, onSlide, show } = props;
   return (
     <div className={`slider-${direction}`} onClick={onSlide} ref={ref} style={{ display: show ? "" : "none" }}>
@@ -18,4 +18,4 @@ const SliderArrow = forwardRef<HTMLDivElement, SliderArrowProps>((props, ref) =>
   );
 });
 
-export default SliderArrow;
+export default SlideArrow;

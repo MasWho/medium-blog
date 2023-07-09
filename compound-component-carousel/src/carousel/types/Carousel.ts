@@ -11,19 +11,18 @@ export type SliderArrowProps = {
   show: boolean 
 };
 
-export type SingleSlideProps = { 
-  slide: Slide; 
-  onSlideLeft: VoidFunction; 
-  onSlideRight: VoidFunction; 
-  showArrow?: boolean 
+export type SlidesProps = { 
+  showArrow?: boolean
 };
 
 export type CarouselProps = {
+  children: ReactNode;
   images: ReactNode[];
   autoplay?: boolean;
   interval?: number;
+};
+
+export type SlidesContainerProps = {
+  children: React.ReactNode;
   height?: string;
-  showPaging?: boolean;
-  showArrow?: boolean;
-  title?: string;
 };

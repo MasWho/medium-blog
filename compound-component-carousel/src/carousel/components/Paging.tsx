@@ -1,9 +1,12 @@
+import { useContext } from "react";
+import { CarouselContext } from "../Carousel";
+
 /**
  * Component that displays the current slide index and the total number of slides.
  */
-const Paging = (props: { numSlides: number; currentSlideIndex: number }) => {
-  const { numSlides, currentSlideIndex } = props;
-  const pagingElements = Array.from({ length: numSlides }, (_, idx) => {
+const Paging = () => {
+  const {slides, currentSlideIndex} = useContext(CarouselContext);
+  const pagingElements = Array.from({ length: slides.length }, (_, idx) => {
     const isActive = idx === currentSlideIndex;
     return <span className={`slide-paging-element ${isActive ? "active" : ""}`} />;
   });
