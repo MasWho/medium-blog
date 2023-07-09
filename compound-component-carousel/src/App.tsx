@@ -13,17 +13,15 @@ function App() {
   ];
 
   return (
-    <Carousel 
-      images={images} 
-      autoplay 
-      interval={3000} 
-    >
-      <SlidesContainer>
-        <Carousel.Title text="Carousel" />
-        <Carousel.Slides />
-        <Carousel.Paging />
-      </SlidesContainer>
-    </Carousel>
+    <div className="main">
+      <Carousel images={images} autoplay interval={3000}>
+        <SlidesContainer>
+          <Carousel.Title text="Carousel" />
+          <Carousel.Slides />
+          <Carousel.Paging />
+        </SlidesContainer>
+      </Carousel>
+    </div>
   );
 }
 
