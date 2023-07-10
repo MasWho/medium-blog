@@ -31,9 +31,9 @@ const defaultContext: CarouselContext = {
 export const CarouselContext = createContext<CarouselContext>(defaultContext);
 
 /**
- * Main carousel component. This component is responsible for displaying the slides and the arrows.
- * It has a state that keeps track of the current slide index.
- * It also has the ability to autoplay the slides at a specified interval.
+ * Main carousel parent component. It uses useSlideRotation hook to manage all carousel states.
+ * It takes an array of images and provides them to children components as slides.
+ * Interval and autoplay props are used to control the slide rotation states.
  * @param props
  * @returns
  */
