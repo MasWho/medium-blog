@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 import "./App.css";
 import Carousel from "./carousel/Carousel";
-import SlidesContainer from "./carousel/components/SlidesContainer";
 
 function App() {
   const images: ReactNode[] = [
@@ -15,11 +14,11 @@ function App() {
   return (
     <div className="main">
       <Carousel images={images} autoplay interval={3000}>
-        <SlidesContainer>
+        <Carousel.SlidesContainer>
           <Carousel.Title text="Carousel" />
           <Carousel.Slides />
           <Carousel.Paging />
-        </SlidesContainer>
+        </Carousel.SlidesContainer>
       </Carousel>
     </div>
   );
