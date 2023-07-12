@@ -172,6 +172,19 @@ $mode: cubic-bezier(0.17, 0.67, 0.55, 1.43);
         }
       }
       
+      .slide-paging-element-square {
+        height: 15px;
+        width: 15px;
+        background-color: #bbbbbb;
+        display: inline-block;
+        opacity: 0.3;
+
+        &.active {
+          background-color: #fddc4b;
+          opacity: 1;
+          transition: opacity 0.5s ease-in-out;
+        }
+      }
     }
 
     .slide-title {

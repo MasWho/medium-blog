@@ -17,7 +17,7 @@ function App() {
         <Carousel.SlidesContainer>
           <Carousel.Title text="Carousel" />
           <Carousel.Slides />
-          <Carousel.Paging />
+          <Carousel.Paging elementStyle="slide-paging-element-square" />
         </Carousel.SlidesContainer>
       </Carousel>
     </div>
