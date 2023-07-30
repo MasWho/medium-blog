@@ -3,7 +3,7 @@ import express from "express";
 import { json } from "body-parser";
 
 // Project dependencies
-import router from "./routes";
+import userRouter from "./routes/users";
 
 // Express initialization
 const app = express();
@@ -12,6 +12,6 @@ const app = express();
 app.use(json());
 
 // Routes
-app.use(router);
+app.use(userRouter);
 
 export default app;
