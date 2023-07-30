@@ -54,4 +54,4 @@ const postHandler = (req: Request, res: Response) => {
 router.get("/users/:id", getHandler);
 router.post("/users", postHandler);
 
-export { router as userRouter };
+export default router;
